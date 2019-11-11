@@ -67,7 +67,8 @@ function startGame() {
     drawSnake();
     var doesntMatter = setInterval(function () {
         if (snake.x + 10 > 500 || snake.y + 10 > 500 || snake.x - 10 < -10 || snake.y - 10 < -10) {
-
+            
+            //localStorage.removeItem("pause");
             if (highscore < snake.score) {
                 highscore = snake.score;
                 localStorage.setItem("highscore", highscore);
@@ -75,11 +76,30 @@ function startGame() {
             if (confirm("Game Over, Wanna Play Again")) {
                 hScore.innerHTML = "Score : 0";
                 htScore.innerHTML = "High Score : " + highscore;
-                localStorage.removeItem("pause");
+                //localStorage.removeItem("pause");
                 initialize();
                 startGame();
             }
             clearInterval(doesntMatter);
+        }
+        else{
+            for(i=2; i<snake.cells.length; i++){
+                if(snake.cells[i].x == snake.x && snake.cells[i].y == snake.y){
+                    localStorage.removeItem("pause");
+                    if (highscore < snake.score) {
+                        highscore = snake.score;
+                        localStorage.setItem("highscore", highscore);
+                    }
+                    if (confirm("Game Over, Wanna Play Again")) {
+                        hScore.innerHTML = "Score : 0";
+                        htScore.innerHTML = "High Score : " + highscore;
+                        localStorage.removeItem("pause");
+                        initialize();
+                        startGame();
+                    }
+                    clearInterval(doesntMatter);
+                }
+            }
         }
         if (keyCode == 37 || keyCode == 38 || keyCode == 39 || keyCode == 40) {
             if (keyCode == 37)
